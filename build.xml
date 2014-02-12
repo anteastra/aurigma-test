@@ -3,38 +3,80 @@
 	<target name="build" depends="jar_lib,jar_sample"/>
 	<target name="run" depends="jar_lib, run_sample"/>
 	
+	
+	<property name="src.dir" value="src"/>
+	<property name="sample_src.dir" value="sampleGUI"/>
+	<property name="test_src.dir" value="test"/>
+	<property name="build.dir" value="build_lib"/>
+	<property name="classes.dir" value="${build.dir}/classes"/>	
+	<property name="sample-main-class" value="com.anteastra.GUI.Sample"/>
+	<property name="lib_jar" value="MetaDataExtractorLib.jar"/>
+	<property name="sample_jar" value="MetaDataExtractorSample.jar"/>
+	
     <target name="clean_lib">
-        <delete dir="build_lib"/>
+        <delete dir="${build.dir}"/>
     </target>
 
     <target name="compile_lib" depends="clean_lib">
-        <mkdir dir="build_lib/classes"/>
-        <javac srcdir="src" destdir="build_lib/classes"/>
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="src" destdir="${classes.dir}"/>
     </target>
 
     <target name="jar_lib" depends="compile_lib">
-        <jar destfile="MetaDataExtractorLib.jar" basedir="build_lib/classes"/>
+        <jar destfile="${lib_jar}" basedir="${classes.dir}"/>
     </target>
 	
 	<target name="clean_sample">
-		<delete dir="build_lib"/>
+		<delete dir="{$build.dir}"/>
 	</target>
 
 	<target name="compile_sample" depends="clean_sample">
-	    <mkdir dir="build_lib/classes"/>
-	    <javac srcdir="sampleGUI" destdir="build_lib/classes" classpath="MetaDataExtractorLib.jar"/>
-	</target>
+	    <mkdir dir="{$classes.dir}"/>
+	    <javac srcdir="${sample_src.dir}" destdir="{$classes.dir}" classpath="{$lib_jar}"/>
+	</target>	
 
 	<target name="jar_sample" depends="compile_sample">
-	    <jar destfile="MetaDataExtractorSample.jar" basedir="build_lib/classes">
+	    <jar destfile="{$sample_jar}" basedir="{$classes.dir}">
 	    	<manifest>
-	    		<attribute name="Main-Class" value="com.anteastra.GUI.Sample"/>
+	    		<attribute name="Main-Class" value="${sample-main-class}"/>
 	    	</manifest>
 	    </jar>
 	</target>
 	
-	<target name="run_sample"  depends="jar_sample">
-		<java jar="MetaDataExtractorSample.jar" fork="true"/>
+	
+	<target name="clean_unit">
+		<delete dir="{$build.dir}"/>
+	</target>
+
+	<target name="compile_unit" depends="clean_unit">
+	    <mkdir dir="{$classes.dir}"/>
+	    <javac srcdir="${test_src.dir}" destdir="${classes.dir}" classpath="${lib_jar}"/>
+	</target>	
+
+	<target name="jar_unit" depends="compile_unit">
+	    <jar destfile="{$test_jar}" basedir="{$classes.dir}"/>
+	</target>
+	
+	<target name="unit_test_library">
+		<junit printsummary="yes" haltonfailure="no">
+			<classpath>
+		    	<pathelement location="lib/junit-4.11.jar"/>
+				<pathelement location="lib/hamcrest-core-1.3.jar"/>
+		    	<pathelement location="${build.tests}"/>
+		    	<pathelement path="${java.class.path}"/>
+		    </classpath>
+		    <test name="com.anteastra.test.MetaDataHandlerTest"
+		             haltonfailure="no" outfile="result">
+		    	<formatter type="plain"/>
+		    	<formatter type="xml"/>
+			</test>
+		</junit>
+	</target>
+	
+	
+	
+	<target name="run_sample"  depends="jar_sample, unit_test_library">
+		<java jar="{$sample_jar}" fork="true"/>
 	</target>
 		
 </project>
