@@ -1,18 +1,19 @@
 package com.anteastra.metaextractor;
 
-class ExifTag extends Tag{
+final class ExifTag extends Tag{
 	
 	public ExifTag(ParseHelper helper, int offSet) {
+		
 		super(helper, offSet);
 	}
 
 	@Override
 	public String getStringRepresetation() {
+		
 		String result;
 		if (isArray) {
 			result = valueArr.toString();
-		}
-		else {
+		} else {
 			result = value.toString();
 		}
 		

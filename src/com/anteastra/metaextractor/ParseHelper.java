@@ -1,6 +1,6 @@
 package com.anteastra.metaextractor;
 
-class ParseHelper {
+final class ParseHelper {
 	
 	private byte[] segment;
 	
@@ -10,17 +10,16 @@ class ParseHelper {
 		segment = app1Segment;
 	}
 
-	public String getString(int index, int length){
+	public String getString(int index, int length) {
 		return new String(segment, index, length);
 	}
 	
-	public void setStraightByteOrder(boolean value){
+	public void setStraightByteOrder(boolean value) {
 		straightOrder = value;
 	}
 
 	
-	public int getUInt16(int index)
-    {
+	public int getUInt16(int index) {
 
         if (!straightOrder) {
             return (segment[index    ] << 8 & 0xFF00) |
@@ -31,8 +30,7 @@ class ParseHelper {
         }
     }
 
-	public short getInt16(int index) 
-    {
+	public short getInt16(int index) {
         if (!straightOrder) {
             return (short) (((short)segment[index    ] << 8 & (short)0xFF00) |
                             ((short)segment[index + 1]      & (short)0xFF));
@@ -42,8 +40,7 @@ class ParseHelper {
         }
     }
 	
-	public int getInt32(int index)
-    {
+	public int getInt32(int index) {
 
         if (!straightOrder) {
             return (segment[index    ] << 24 & 0xFF000000) |

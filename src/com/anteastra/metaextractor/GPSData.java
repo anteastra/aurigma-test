@@ -3,16 +3,16 @@ package com.anteastra.metaextractor;
 import java.util.HashMap;
 import java.util.Map;
 
-class GPSData extends AbstractData {
+final class GPSData implements Data {
 	
-    private Map<Integer, Tag> gpsMap = new HashMap<Integer, Tag>();
-	private static Map<Integer, String> stringTagMap= new HashMap<Integer, String>();
+	private Map<Integer, Tag> gpsMap = new HashMap<Integer, Tag>();
+    private static Map<Integer, String> stringTagMap= new HashMap<Integer, String>();
 	
-	static{
+	static {
 		stringTagMap.put(MetaDataHandler.GPS_TAG_GPSTimeStamp, "GPSTimeStamp");
 	}        
     	
-    public static String getTagName(Integer key){
+	public static String getTagName(Integer key){
     	return stringTagMap.get(key);
     }
 	

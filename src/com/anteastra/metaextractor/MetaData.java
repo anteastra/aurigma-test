@@ -1,7 +1,6 @@
 package com.anteastra.metaextractor;
 
-
-class MetaData {
+final class MetaData {
 	
 	ExifData exifData = new ExifData();
 	GPSData gpsData = new GPSData();
@@ -37,7 +36,7 @@ class MetaData {
 		parseDirectory(exifData, helper, firstDirectoryOffset);
 	}
 	
-	private void parseDirectory(AbstractData data, ParseHelper helper, int firstDirectoryOffset){
+	private void parseDirectory(Data data, ParseHelper helper, int firstDirectoryOffset){
 		int dirTagCount = helper.getUInt16(firstDirectoryOffset);
 		
 		for (int i=0; i< dirTagCount; i++){

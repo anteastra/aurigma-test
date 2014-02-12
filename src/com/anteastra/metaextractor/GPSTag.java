@@ -1,6 +1,6 @@
 package com.anteastra.metaextractor;
 
-class GPSTag extends Tag{
+final class GPSTag extends Tag{
 	
 	public GPSTag(ParseHelper helper, int tagOffset) {
 		super(helper, tagOffset);
