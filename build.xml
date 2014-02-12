@@ -1,12 +1,11 @@
 <project name="aurigma-test" default="build">
 
-	<target name="build" depends="jar-lib,jar-sample"/>
-	<target name="run" depends="jar-lib, run-sample"/>
+	<target name="build" depends="jar-lib,jar-sample,unit-test-run"/>
 	
 	<property name="out.dir" value="output"/>
 	<property name="src.dir" value="src"/>
-	<property name="sample-src.dir" value="sampleGUI"/>
-	<property name="test-src.dir" value="test"/>
+	<property name="sample-src.dir" value="src-sample-gui"/>
+	<property name="test-src.dir" value="src-tests"/>
 	<property name="assets.dir" value="assets"/>
 	
 	<property name="build.dir" value="${out.dir}/build_lib"/>
@@ -15,6 +14,7 @@
 	<property name="sample-main-class" value="com.anteastra.GUI.Sample"/>
 	<property name="lib-jar" value="MetaDataExtractorLib.jar"/>
 	<property name="sample-jar" value="MetaDataExtractorSample.jar"/>
+	<property name="test-jar" value="MetaDataExtractorTest.jar"/>
 	
 
     <target name="jar-lib">
@@ -41,37 +41,35 @@
   		</copy>
 	</target>
 	
-	
-	<target name="clean-unit">
-		<delete dir="{$build.dir}"/>
+	<target name="compile-unit">
+	    <delete dir="${build.dir}"/>
+	    <mkdir dir="${classes.dir}/tests"/>
+	    <path id="unit.jars">
+    		<fileset dir="${out.dir}/lib">
+        		<include name="**/*.jar"/>
+    		</fileset>
+    		<fileset dir="lib">
+        		<include name="**/*.jar"/>
+    		</fileset>
+		</path>
+	    <javac srcdir="${test-src.dir}" destdir="${classes.dir}/tests" classpathref="unit.jars"/>
 	</target>
-
-	<target name="compile-unit" depends="clean-unit">
-	    <mkdir dir="{$classes.dir}"/>
-	    <javac srcdir="${test-src.dir}" destdir="${classes.dir}" classpath="${lib-jar}"/>
-	</target>	
-
-	<target name="jar-unit" depends="compile-unit">
-	    <jar destfile="{$test-jar}" basedir="{$classes.dir}"/>
-	</target>
 	
-	<target name="unit-test-library">
+	<target name="unit-test-run" depends="compile-unit">
 		<junit printsummary="yes" haltonfailure="no">
 			<classpath>
 		    	<pathelement location="lib/junit-4.11.jar"/>
 				<pathelement location="lib/hamcrest-core-1.3.jar"/>
-		    	<pathelement location="${build.tests}"/>
-		    	<pathelement path="${java.class.path}"/>
+				<pathelement location="${out.dir}/lib/${lib-jar}"/>
+		    	<pathelement path="${classes.dir}/tests"/>
 		    </classpath>
 		    <test name="com.anteastra.test.MetaDataHandlerTest"
-		             haltonfailure="no" outfile="result">
+		             haltonfailure="no" outfile="${out.dir}/result">
 		    	<formatter type="plain"/>
-		    	<formatter type="xml"/>
 			</test>
 		</junit>
-	</target>
-	
-	
+		<delete dir="${build.dir}"/>
+	</target>	
 	
 	<target name="run-sample"  depends="jar-sample">
 		<java jar="${out.dir}/${sample-jar}" fork="true"/>
