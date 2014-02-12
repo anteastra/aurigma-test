@@ -16,7 +16,7 @@ final class ExifData implements Data {
 		stringTagMap.put(MetaDataHandler.EXIF_TAG_MODEL, "Model");		
 		stringTagMap.put(MetaDataHandler.EXIF_TAG_X_RESOLUTION, "XResolution");
 		stringTagMap.put(MetaDataHandler.EXIF_TAG_Y_RESOLUTION, "YResolution");		
-	}        
+	}
     
     public static String getTagName(Integer key) {
     	

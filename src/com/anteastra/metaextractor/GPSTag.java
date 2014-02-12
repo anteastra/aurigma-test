@@ -16,7 +16,7 @@ final class GPSTag extends Tag{
 			result = value.toString();
 		}
 		
-		if (tagID == MetaDataHandler.GPS_TAG_GPSTimeStamp){
+		if (tagID == MetaDataHandler.GPS_TAG_GPSTimeStamp) {
 			result = (int)valueArr[0]+":"
 					+(int)valueArr[1]+":"
 					+(int)valueArr[2]+" UTC";

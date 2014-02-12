@@ -29,7 +29,18 @@ abstract class Tag {
 		updateValue(helper);
 	}
 	
-	private void updateValue(ParseHelper helper){		
+	public abstract String getStringRepresetation();
+	
+	public Object getValue() {
+		if (isArray) return valueArr;
+		return value;
+	}
+	
+	public Integer getID() {		
+		return (int) tagID;
+	}
+	
+	private void updateValue(ParseHelper helper) {		
 		
 		switch(tagType){
 			case ASCII:
@@ -55,18 +66,6 @@ abstract class Tag {
 				break;
 			default:{};
 		}
-	}
-
-	public Object getValue() {
-		if (isArray) return valueArr;
-		return value;
-	}
-	
-	public abstract String getStringRepresetation();
-	
-
-	public Integer getID() {		
-		return (int) tagID;
 	}
 }
 

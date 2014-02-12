@@ -36,7 +36,7 @@ final class MetaData {
 		parseDirectory(exifData, helper, firstDirectoryOffset);
 	}
 	
-	private void parseDirectory(Data data, ParseHelper helper, int firstDirectoryOffset){
+	private void parseDirectory(Data data, ParseHelper helper, int firstDirectoryOffset) {
 		int dirTagCount = helper.getUInt16(firstDirectoryOffset);
 		
 		for (int i=0; i< dirTagCount; i++){

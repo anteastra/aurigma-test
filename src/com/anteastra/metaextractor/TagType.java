@@ -1,6 +1,6 @@
 package com.anteastra.metaextractor;
 
-enum TagType{
+enum TagType {
 	BYTE(1,1),
 	ASCII(2,1),
 	SHORT(3,2),
@@ -18,10 +18,11 @@ enum TagType{
 		byteSize = size;
 	}
 	
-	public int getNumber(){
+	public int getNumber() {
 		return number;
 	}
-	public static TagType findTeg(int num){
+	
+	public static TagType findTeg(int num) {
 		for (TagType t: TagType.values()){
 			if (t.number == num) return t;
 		}		
