@@ -160,10 +160,19 @@ public class MetaDataHandler {
 		return data.getGPSRepresetation(gpsTag);
 	}
 
+	/**
+	 * 
+	 * @return true, if file parsed successfully
+	 */
 	public boolean isParsedOK() {
 		return isParsedOK;
 	}
 
+	/**
+	 * Assumed that return value will be null if there was no error<br>
+	 * and it will contain explanation of why where was error
+	 * @return error message as String
+	 */
 	public String getErrorMsg() {
 		return errorMsg;
 	}
