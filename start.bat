@@ -1,1 +1,0 @@
-java -jar MetaDataExtractorSample.jar

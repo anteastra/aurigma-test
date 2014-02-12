@@ -1,63 +1,61 @@
-<project name="aurigma-test" default="run">
+<project name="aurigma-test" default="build">
 
-	<target name="build" depends="jar_lib,jar_sample"/>
-	<target name="run" depends="jar_lib, run_sample"/>
+	<target name="build" depends="jar-lib,jar-sample"/>
+	<target name="run" depends="jar-lib, run-sample"/>
 	
-	
+	<property name="out.dir" value="output"/>
 	<property name="src.dir" value="src"/>
-	<property name="sample_src.dir" value="sampleGUI"/>
-	<property name="test_src.dir" value="test"/>
-	<property name="build.dir" value="build_lib"/>
-	<property name="classes.dir" value="${build.dir}/classes"/>	
-	<property name="sample-main-class" value="com.anteastra.GUI.Sample"/>
-	<property name="lib_jar" value="MetaDataExtractorLib.jar"/>
-	<property name="sample_jar" value="MetaDataExtractorSample.jar"/>
+	<property name="sample-src.dir" value="sampleGUI"/>
+	<property name="test-src.dir" value="test"/>
+	<property name="assets.dir" value="assets"/>
 	
-    <target name="clean_lib">
+	<property name="build.dir" value="${out.dir}/build_lib"/>
+	<property name="classes.dir" value="${build.dir}/classes"/>
+		
+	<property name="sample-main-class" value="com.anteastra.GUI.Sample"/>
+	<property name="lib-jar" value="MetaDataExtractorLib.jar"/>
+	<property name="sample-jar" value="MetaDataExtractorSample.jar"/>
+	
+
+    <target name="jar-lib">
+        <delete dir="${out.dir}"/>
+        <mkdir dir="${out.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>        
+        <jar destfile="${out.dir}/lib/${lib-jar}" basedir="${classes.dir}"/>
         <delete dir="${build.dir}"/>
     </target>
 
-    <target name="compile_lib" depends="clean_lib">
-        <mkdir dir="${classes.dir}"/>
-        <javac srcdir="src" destdir="${classes.dir}"/>
-    </target>
-
-    <target name="jar_lib" depends="compile_lib">
-        <jar destfile="${lib_jar}" basedir="${classes.dir}"/>
-    </target>
-	
-	<target name="clean_sample">
-		<delete dir="{$build.dir}"/>
-	</target>
-
-	<target name="compile_sample" depends="clean_sample">
-	    <mkdir dir="{$classes.dir}"/>
-	    <javac srcdir="${sample_src.dir}" destdir="{$classes.dir}" classpath="{$lib_jar}"/>
-	</target>	
-
-	<target name="jar_sample" depends="compile_sample">
-	    <jar destfile="{$sample_jar}" basedir="{$classes.dir}">
+	<target name="jar-sample">
+	    <delete dir="${build.dir}"/>
+	    <mkdir dir="${classes.dir}"/>
+	    <javac srcdir="${sample-src.dir}" destdir="${classes.dir}" classpath="${out.dir}/lib/${lib-jar}"/>
+	    <jar destfile="${out.dir}/${sample-jar}" basedir="${classes.dir}">
 	    	<manifest>
 	    		<attribute name="Main-Class" value="${sample-main-class}"/>
 	    	</manifest>
 	    </jar>
+	    <delete dir="${build.dir}"/>	    
+	    <copy todir="${out.dir}">
+    		<fileset dir="${assets.dir}"/>
+  		</copy>
 	</target>
 	
 	
-	<target name="clean_unit">
+	<target name="clean-unit">
 		<delete dir="{$build.dir}"/>
 	</target>
 
-	<target name="compile_unit" depends="clean_unit">
+	<target name="compile-unit" depends="clean-unit">
 	    <mkdir dir="{$classes.dir}"/>
-	    <javac srcdir="${test_src.dir}" destdir="${classes.dir}" classpath="${lib_jar}"/>
+	    <javac srcdir="${test-src.dir}" destdir="${classes.dir}" classpath="${lib-jar}"/>
 	</target>	
 
-	<target name="jar_unit" depends="compile_unit">
-	    <jar destfile="{$test_jar}" basedir="{$classes.dir}"/>
+	<target name="jar-unit" depends="compile-unit">
+	    <jar destfile="{$test-jar}" basedir="{$classes.dir}"/>
 	</target>
 	
-	<target name="unit_test_library">
+	<target name="unit-test-library">
 		<junit printsummary="yes" haltonfailure="no">
 			<classpath>
 		    	<pathelement location="lib/junit-4.11.jar"/>
@@ -75,8 +73,8 @@
 	
 	
 	
-	<target name="run_sample"  depends="jar_sample, unit_test_library">
-		<java jar="{$sample_jar}" fork="true"/>
+	<target name="run-sample"  depends="jar-sample">
+		<java jar="${out.dir}/${sample-jar}" fork="true"/>
 	</target>
 		
 </project>

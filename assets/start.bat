@@ -1,0 +1,1 @@
+java -cp lib\MetaDataExtractorLib.jar;MetaDataExtractorSample.jar com.anteastra.GUI.Sample
