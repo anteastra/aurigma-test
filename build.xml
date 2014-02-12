@@ -1,0 +1,40 @@
+<project name="aurigma-test" default="run">
+
+	<target name="build" depends="jar_lib,jar_sample"/>
+	<target name="run" depends="jar_lib, run_sample"/>
+	
+    <target name="clean_lib">
+        <delete dir="build_lib"/>
+    </target>
+
+    <target name="compile_lib" depends="clean_lib">
+        <mkdir dir="build_lib/classes"/>
+        <javac srcdir="src" destdir="build_lib/classes"/>
+    </target>
+
+    <target name="jar_lib" depends="compile_lib">
+        <jar destfile="MetaDataExtractorLib.jar" basedir="build_lib/classes"/>
+    </target>
+	
+	<target name="clean_sample">
+		<delete dir="build_lib"/>
+	</target>
+
+	<target name="compile_sample" depends="clean_sample">
+	    <mkdir dir="build_lib/classes"/>
+	    <javac srcdir="sampleGUI" destdir="build_lib/classes" classpath="MetaDataExtractorLib.jar"/>
+	</target>
+
+	<target name="jar_sample" depends="compile_sample">
+	    <jar destfile="MetaDataExtractorSample.jar" basedir="build_lib/classes">
+	    	<manifest>
+	    		<attribute name="Main-Class" value="com.anteastra.GUI.Sample"/>
+	    	</manifest>
+	    </jar>
+	</target>
+	
+	<target name="run_sample"  depends="jar_sample">
+		<java jar="MetaDataExtractorSample.jar" fork="true"/>
+	</target>
+		
+</project>

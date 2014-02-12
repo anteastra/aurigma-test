@@ -1,11 +1,8 @@
 package com.anteastra.test;
 
 import static org.junit.Assert.*;
-
 import java.io.File;
-
 import org.junit.Test;
-
 import com.anteastra.metaextractor.MetaDataHandler;
 
 public class TestMetaDataHandler {
